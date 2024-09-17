@@ -1,6 +1,6 @@
 from ..model.entities import Order, User, Pizza, OrderStatus
 from ..model.db import Db
-
+from uuid import uuid4
 
 class PizzaService:
     def __init__(self, db: Db):
@@ -10,7 +10,7 @@ class PizzaService:
         pass
 
     def add_user(self, name: str, phone_number: int) -> User:
-        user = User(name=name, phone_number=phone_number)
+        user = User(name=name, phone_number=phone_number, user_id=str(uuid4()))
         self.db.add_user(user)
         return user
 

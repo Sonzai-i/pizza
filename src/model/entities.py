@@ -1,5 +1,7 @@
 from enum import Enum
 from typing import List
+from uuid import uuid4
+
 
 class OrderStatus(Enum):
     NEW = 1
@@ -11,9 +13,10 @@ class OrderStatus(Enum):
     COMPLETED = 7
 
 class User:
-    def __init__(self, name: str, phone_number: int):
+    def __init__(self, name: str, phone_number: int, user_id: str):
         self.name = name
         self.phone_number = phone_number
+        self.user_id = user_id
 
 class Order:
     def __init__(self, order_id: str, user_id: str, pizza_ids: List[str], order_status: OrderStatus, paid: bool):
