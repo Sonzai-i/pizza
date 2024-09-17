@@ -10,7 +10,9 @@ class PizzaService:
         pass
 
     def add_user(self, name: str, phone_number: int) -> User:
-        pass
+        user = User(name=name, phone_number=phone_number)
+        self.db.add_user(user)
+        return user
 
     def add_pizza(self, order_id: str, pizza: Pizza):
         pass
