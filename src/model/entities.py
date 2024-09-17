@@ -16,10 +16,19 @@ class User:
         self.phone_number = phone_number
 
 class Order:
-    pass
+    def __init__(self, order_id: str, user_id: str, pizza_ids: List[str], order_status: OrderStatus, paid: bool):
+        self.order_id = order_id
+        self.user_id = user_id
+        self.pizza_ids = pizza_ids
+        self.order_status = order_status
+        self.paid = paid
 
 class BasePizza:
-    pass
+    def __init__(self, base_pizza_id: str, name: str, description: str, price_rub: float):
+        self.base_pizza_id = base_pizza_id
+        self.name = name
+        self.description = description
+        self.price_rub = price_rub
 
 class Pizza:
     def __init__(self, pizza_id: str, base_pizza_id: str, topping_ids: List[str]):
@@ -28,4 +37,8 @@ class Pizza:
         self.topping_ids = topping_ids
 
 class Topping:
-    pass
+    def __init__(self, topping_id: str, name: str, description, price_rub: float):
+        self.topping_id = topping_id
+        self.name = name
+        self.description = description
+        self.price_rub = price_rub
