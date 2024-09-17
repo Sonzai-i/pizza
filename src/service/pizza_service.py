@@ -7,22 +7,30 @@ class PizzaService:
         self.db = db
 
     def create_order(self, user_id: str) -> Order:
-        return Order(order_id=str(uuid4()),
+        order = Order(order_id=str(uuid4()),
                      user_id=user_id,
                      pizza_ids=[],
                      order_status=OrderStatus.NEW,
                      paid=False)
 
+        self.db.save_order(order)
+        return order
+
     def add_user(self, name: str, phone_number: int) -> User:
-        user = User(name=name, phone_number=phone_number, user_id=str(uuid4()))
+        user = User(name=name,
+                    phone_number=phone_number,
+                    user_id=str(uuid4()))
+
         self.db.add_user(user)
         return user
 
     def add_pizza(self, order_id: str, pizza: Pizza):
-        pass
+        order = self.db.find_order(order_id)
+        order.pizza_ids.append(pizza.base_pizza_id)
 
     def remove_pizza(self, order_id: str, pizza_id: str):
-        pass
+        order = self.db.find_order(order_id)
+        order.pizza_ids.remove(pizza_id)
 
     def update_address(self, order_id: str):
         pass
