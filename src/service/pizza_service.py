@@ -7,7 +7,11 @@ class PizzaService:
         self.db = db
 
     def create_order(self, user_id: str) -> Order:
-        pass
+        return Order(order_id=str(uuid4()),
+                     user_id=user_id,
+                     pizza_ids=[],
+                     order_status=OrderStatus.NEW,
+                     paid=False)
 
     def add_user(self, name: str, phone_number: int) -> User:
         user = User(name=name, phone_number=phone_number, user_id=str(uuid4()))
