@@ -18,6 +18,10 @@ class Db:
         pass
 
     def add_user(self, user: User):
+        """
+
+        :rtype: object
+        """
         pass
 
     def save_order(self, order: Order):
@@ -38,28 +42,28 @@ class InMemDb(Db):
         self.toppings = dict()
 
     def find_user(self, user_id: str) -> User:
-        pass
+        return self.users[user_id]
 
     def find_order(self, order_id: str) -> Order:
-        pass
+        return self.orders[order_id]
 
     def find_pizza(self, pizza_id: str) -> Pizza:
-        pass
+        return self.pizzas[pizza_id]
 
     def find_topping(self, topping_id: str):
-        pass
+        return self.toppings[topping_id]
 
     def find_base_pizza(self, base_pizza_id: str) -> BasePizza:
-        pass
+        return self.base_pizzas[base_pizza_id]
 
     def add_user(self, user: User):
-        self.users[user.phone_number] = user.name
+        self.users[user.user_id] = user
 
     def save_order(self, order: Order):
-        pass
+        self.orders[order.order_id] = order
 
     def save_topping(self, topping: Topping):
-        pass
+        self.toppings[topping.topping_id] = topping
 
     def save_base_pizza(self, base_pizza: BasePizza):
-        pass
+        self.base_pizzas[base_pizza.base_pizza_id] = base_pizza
