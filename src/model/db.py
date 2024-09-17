@@ -53,7 +53,7 @@ class InMemDb(Db):
         pass
 
     def add_user(self, user: User):
-        pass
+        self.users[user.phone_number] = user.name
 
     def save_order(self, order: Order):
         pass
