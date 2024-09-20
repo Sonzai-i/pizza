@@ -1,3 +1,5 @@
+import random
+import uuid
 from enum import Enum
 from typing import List
 from uuid import uuid4
@@ -27,11 +29,12 @@ class Order:
         self.paid = paid
 
 class BasePizza:
-    def __init__(self, base_pizza_id: str, name: str, description: str, price_rub: float):
-        self.base_pizza_id = base_pizza_id
-        self.name = name
-        self.description = description
-        self.price_rub = price_rub
+    alphabet = list(map(chr, range(97, 123)))
+    def __init__(self):
+        self.base_pizza_id = str(uuid.uuid4())
+        self.name = ''.join(random.sample(self.alphabet, random.randint(4, 10)))
+        self.description = ''
+        self.price_rub = len(self.name) * 180
 
 class Pizza:
     def __init__(self, pizza_id: str, base_pizza_id: str, topping_ids: List[str]):
@@ -40,8 +43,9 @@ class Pizza:
         self.topping_ids = topping_ids
 
 class Topping:
-    def __init__(self, topping_id: str, name: str, description, price_rub: float):
-        self.topping_id = topping_id
-        self.name = name
-        self.description = description
-        self.price_rub = price_rub
+    alphabet = list(map(chr, range(97, 123)))
+    def __init__(self):
+        self.topping_id = str(uuid.uuid4())
+        self.name = ''.join(random.sample(self.alphabet, random.randint(4, 10)))
+        self.description = ''
+        self.price_rub = len(self.name) * 9
