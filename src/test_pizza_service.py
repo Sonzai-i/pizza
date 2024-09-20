@@ -39,6 +39,7 @@ def test_pizza_sevice_happy_path():
         [pinapple.topping_id]
     )
     db.save_pizza(pepperoni_pinapple)
+
     pizza_service.add_pizza(order.order_id, pepperoni_pinapple)
     pizza_service.update_address(order.order_id, 'Russia, Moscow, Krasnaya ploschad, 1')
     

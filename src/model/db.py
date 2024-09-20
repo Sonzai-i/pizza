@@ -28,7 +28,8 @@ class Db:
 
     def save_base_pizza(self, base_pizza: BasePizza):
         pass
-    
+
+
 class InMemDb(Db):
     def __init__(self):
         self.users = dict()
@@ -65,4 +66,4 @@ class InMemDb(Db):
         self.base_pizzas[base_pizza.base_pizza_id] = base_pizza
 
     def save_pizza(self, pizza: Pizza):
-        self.base_pizzas[pizza.pizza_id] = pizza
+        self.pizzas[pizza.pizza_id] = pizza
