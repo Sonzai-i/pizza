@@ -18,10 +18,6 @@ class Db:
         pass
 
     def add_user(self, user: User):
-        """
-
-        :rtype: object
-        """
         pass
 
     def save_order(self, order: Order):
@@ -50,7 +46,7 @@ class InMemDb(Db):
     def find_pizza(self, pizza_id: str) -> Pizza:
         return self.pizzas[pizza_id]
 
-    def find_topping(self, topping_id: str):
+    def find_topping(self, topping_id: str) -> Topping:
         return self.toppings[topping_id]
 
     def find_base_pizza(self, base_pizza_id: str) -> BasePizza:
@@ -67,3 +63,6 @@ class InMemDb(Db):
 
     def save_base_pizza(self, base_pizza: BasePizza):
         self.base_pizzas[base_pizza.base_pizza_id] = base_pizza
+
+    def save_pizza(self, pizza: Pizza):
+        self.base_pizzas[pizza.pizza_id] = pizza
