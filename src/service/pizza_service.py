@@ -8,11 +8,7 @@ class PizzaService:
         self.db = db
 
     def create_order(self, user_id: str) -> Order:
-        order = Order(order_id=str(uuid4()),
-                      user_id=user_id,
-                      pizza_ids=[],
-                      order_status=OrderStatus.NEW,
-                      paid=False)
+        order = Order(user_id=user_id)
 
         self.db.save_order(order)
         return order
@@ -28,6 +24,7 @@ class PizzaService:
     def add_pizza(self, order_id: str, pizza: Pizza):
         order = self.db.find_order(order_id)
         order.pizza_ids.append(pizza.pizza_id)
+        self.db.save_order(order)
 
     def remove_pizza(self, order_id: str, pizza_id: str):
         order = self.db.find_order(order_id)

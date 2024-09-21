@@ -23,12 +23,12 @@ class User:
 
 
 class Order:
-    def __init__(self, order_id: str, user_id: str, pizza_ids: List[str], order_status: OrderStatus, paid: bool):
-        self.order_id = order_id
+    def __init__(self, user_id: str):
+        self.order_id = str(uuid4())
         self.user_id = user_id
-        self.pizza_ids = pizza_ids
-        self.order_status = order_status
-        self.paid = paid
+        self.pizza_ids = []
+        self.order_status = OrderStatus.NEW
+        self.paid = False
 
 
 class BasePizza:
