@@ -28,6 +28,7 @@ class PizzaService:
     def remove_pizza(self, order_id: str, pizza_id: str):
         order = self.db.find_order(order_id)
         order.pizza_ids.remove(pizza_id)
+        self.db.save_order(order)
 
     def update_address(self, order_id: str, address: str):
         pass
