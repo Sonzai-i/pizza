@@ -1,5 +1,7 @@
-from .entities import *
+import copy
 
+from .entities import *
+from copy import deepcopy
 # Interface for db
 class Db:
     def find_user(self, user_id: str) -> User:
@@ -39,19 +41,19 @@ class InMemDb(Db):
         self.toppings = dict()
 
     def find_user(self, user_id: str) -> User:
-        return self.users[user_id]
+        return copy.deepcopy(self.users[user_id])
 
     def find_order(self, order_id: str) -> Order:
-        return self.orders[order_id]
+        return copy.deepcopy(self.orders[order_id])
 
     def find_pizza(self, pizza_id: str) -> Pizza:
-        return self.pizzas[pizza_id]
+        return copy.deepcopy(self.pizzas[pizza_id])
 
     def find_topping(self, topping_id: str) -> Topping:
-        return self.toppings[topping_id]
+        return copy.deepcopy(self.toppings[topping_id])
 
     def find_base_pizza(self, base_pizza_id: str) -> BasePizza:
-        return self.base_pizzas[base_pizza_id]
+        return copy.deepcopy(self.base_pizzas[base_pizza_id])
 
     def add_user(self, user: User):
         self.users[user.user_id] = user
