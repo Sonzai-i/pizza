@@ -9,7 +9,6 @@ class PizzaService:
 
     def create_order(self, user_id: str) -> Order:
         order = Order(user_id=user_id)
-
         self.db.save_order(order)
         return order
 
@@ -41,6 +40,7 @@ class PizzaService:
             sum_order += self._calc_price_pizza(pizza)
             sum_order += self._calc_price_topping(pizza)
         return sum_order
+
     def _calc_price_pizza(self, pizza: Pizza) -> float:
         baze_pizza_id = self.db.find_base_pizza(pizza.base_pizza_id)
         return baze_pizza_id.price_rub
@@ -54,9 +54,11 @@ class PizzaService:
         return sum_
 
     def on_payment_complete(self, order_id: str):
-        pass
+        order = self.db.find_order(order_id)
+        order.paid = True
+        order.order_status = OrderStatus.ORDERED
+        self.db.save_order(order)
 
-    def update_order_status(self, order_id: str, status: OrderStatus):
-        # TODO: validate status
-        # IMPORTANT: status can be updated only after validation
+
+    def update_order_status(self, order_id: str, status: OrderStatus) -> object:
         pass
