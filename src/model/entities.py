@@ -29,6 +29,7 @@ class Order:
         self.pizza_ids = []
         self.order_status = OrderStatus.NEW
         self.paid = False
+        self.address = ''
 
 
 class BasePizza:
