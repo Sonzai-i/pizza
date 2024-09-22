@@ -33,13 +33,11 @@ class Order:
 
 
 class BasePizza:
-    alphabet = list(map(chr, range(97, 123)))
-
-    def __init__(self):
-        self.base_pizza_id = str(uuid.uuid4())
-        self.name = ''.join(random.sample(self.alphabet, random.randint(4, 10)))
-        self.description = ''
-        self.price_rub = len(self.name) * 180
+    def __init__(self, base_pizza_id: str, name: str, description: str, price_rub: float ):
+        self.base_pizza_id = base_pizza_id
+        self.name = name
+        self.description = description
+        self.price_rub = price_rub
 
 
 class Pizza:

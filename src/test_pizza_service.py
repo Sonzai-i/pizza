@@ -24,15 +24,22 @@ def test_pizza_sevice_happy_path():
 
     db = InMemDb()
     
-    pepperoni = BasePizza()
+    pepperoni = BasePizza(base_pizza_id=str(uuid.uuid4()),
+                          name='Пеперони',
+                          description='Пряные колбаски пепперони с легкой перчинкой, '
+                                      'сыр моцарелла со сливочным вкусом и нежный томатный соус',
+                          price_rub= 1280)
+
     db.save_base_pizza(pepperoni)
     pinapple = Topping()
     db.save_topping(pinapple)
 
     pizza_service = PizzaService(db)
     user = pizza_service.add_user("Name", 79003002010)
-    order = pizza_service.create_order(order_id=str(uuid.uuid4()), user_id=user.user_id,
-                                       pizza_ids=[], address='')
+    order = pizza_service.create_order(order_id=str(uuid.uuid4()),
+                                       user_id=user.user_id,
+                                       pizza_ids=[],
+                                       address='')
 
     pepperoni_pinapple = Pizza(
         str(uuid.uuid4()),
