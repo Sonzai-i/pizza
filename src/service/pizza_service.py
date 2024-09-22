@@ -1,3 +1,5 @@
+from typing import List
+
 from ..model.entities import Order, User, Pizza, OrderStatus
 from ..model.db import Db
 from uuid import uuid4
@@ -7,8 +9,8 @@ class PizzaService:
     def __init__(self, db: Db):
         self.db = db
 
-    def create_order(self, user_id: str) -> Order:
-        order = Order(user_id=user_id)
+    def create_order(self, order_id: str, user_id: str, pizza_ids: List[str], address: str ) -> Order:
+        order = Order(user_id=user_id, order_id=order_id, pizza_ids=pizza_ids, address=address)
         self.db.save_order(order)
         return order
 

@@ -31,7 +31,8 @@ def test_pizza_sevice_happy_path():
 
     pizza_service = PizzaService(db)
     user = pizza_service.add_user("Name", 79003002010)
-    order = pizza_service.create_order(user.user_id)
+    order = pizza_service.create_order(order_id=str(uuid.uuid4()), user_id=user.user_id,
+                                       pizza_ids=[], address='')
 
     pepperoni_pinapple = Pizza(
         str(uuid.uuid4()),
