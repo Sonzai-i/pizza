@@ -57,9 +57,21 @@ class PizzaService:
     def on_payment_complete(self, order_id: str):
         order = self.db.find_order(order_id)
         order.paid = True
-        order.order_status = OrderStatus.ORDERED
         self.db.save_order(order)
 
 
     def update_order_status(self, order_id: str, status: OrderStatus) -> object:
-        pass
+        order = self.db.find_order(order_id)
+        if status == OrderStatus.ORDERED:
+            order.order_status = OrderStatus.PREPARING
+        elif status == OrderStatus.PREPARING:
+            order.order_status = OrderStatus.READY
+        elif status == OrderStatus.READY:
+            order.order_status = OrderStatus.DELIVERING
+        elif status == OrderStatus.DELIVERING:
+            order.order_status = OrderStatus.DELIVERED
+        elif status == OrderStatus.DELIVERED and order.paid:
+            order.order_status = OrderStatus.COMPLETED
+        self.db.save_order(order)
+
+
