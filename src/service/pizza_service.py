@@ -74,4 +74,6 @@ class PizzaService:
             order.order_status = OrderStatus.COMPLETED
         self.db.save_order(order)
 
+        return order_id
+
 
