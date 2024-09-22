@@ -62,15 +62,15 @@ class PizzaService:
 
     def update_order_status(self, order_id: str, status: OrderStatus) -> object:
         order = self.db.find_order(order_id)
-        if status == OrderStatus.ORDERED:
+        if status == OrderStatus.ORDERED and order.order_status ==  OrderStatus.NEW:
+            order.order_status = OrderStatus.ORDERED
+        elif status == OrderStatus.PREPARING and order.order_status ==  OrderStatus.ORDERED:
             order.order_status = OrderStatus.PREPARING
-        elif status == OrderStatus.PREPARING:
+        elif status == OrderStatus.READY and order.order_status ==  OrderStatus.PREPARING:
             order.order_status = OrderStatus.READY
-        elif status == OrderStatus.READY:
+        elif status == OrderStatus.DELIVERING and order.order_status ==  OrderStatus.READY:
             order.order_status = OrderStatus.DELIVERING
-        elif status == OrderStatus.DELIVERING:
-            order.order_status = OrderStatus.DELIVERED
-        elif status == OrderStatus.DELIVERED and order.paid:
+        elif order.paid:
             order.order_status = OrderStatus.COMPLETED
         self.db.save_order(order)
 
