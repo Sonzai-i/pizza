@@ -32,10 +32,8 @@ class PizzaService:
 
     def update_address(self, order_id: str, address: str):
         order = self.db.find_order(order_id)
-        user = self.db.find_user(order.user_id)
-        user.address = address
-        self.db.add_user(user)
-
+        order.address = address
+        self.db.save_order(order)
 
     def calc_price(self, order_id: str) -> float:
         order = self.db.find_order(order_id)
