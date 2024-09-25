@@ -50,7 +50,12 @@ class PizzaService:
         self.db.save_order(order)
 
     def update_address(self, order_id: str, address: str):
+        status_before_delivery = [OrderStatus.NEW,
+                                  OrderStatus.ORDERED,
+                                  OrderStatus.READY,
+                                  OrderStatus.PREPARING]
         order = self.db.find_order(order_id)
+        assert order.order_status in status_before_delivery
         order.address = address
         self.db.save_order(order)
 

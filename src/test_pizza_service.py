@@ -71,7 +71,6 @@ def test_pizza_sevice_happy_path():
     pizza_service.update_address(order.order_id, 'Russia, Moscow, Krasnaya ploschad, 1')
 
     deliver_order(pizza_service=pizza_service, order_id=order.order_id)
-
     price = pizza_service.calc_price(order.order_id)
     assert price == 1340
 
