@@ -79,6 +79,7 @@ def test_pizza_sevice_happy_path():
     # pizza_service.remove_pizza(order.order_id, pizza_id=calzone_empty.pizza_id)
 
     pizza_service.update_address(order.order_id, 'Russia, Moscow, Krasnaya ploschad, 1')
+    pizza_service.update_order_status(order.order_id, OrderStatus.ORDERED)
 
     deliver_order(pizza_service=pizza_service, order_id=order.order_id)
     price = pizza_service.calc_price(order.order_id)

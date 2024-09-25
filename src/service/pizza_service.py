@@ -15,18 +15,6 @@ class PizzaService:
         OrderStatus.DELIVERED: OrderStatus.COMPLETED
     }
 
-    status_before_delivery = [
-        OrderStatus.NEW,
-        OrderStatus.ORDERED,
-        OrderStatus.READY,
-        OrderStatus.PREPARING
-    ]
-
-    status_for_order = {
-        OrderStatus.NEW: OrderStatus.ORDERED,
-        OrderStatus.ORDERED: OrderStatus.ORDERED,
-    }
-
     def __init__(self, db: Db):
         self.db = db
 
@@ -47,21 +35,20 @@ class PizzaService:
 
     def add_pizza(self, order_id: str, pizza: Pizza):
         order = self.db.find_order(order_id)
-        assert order.order_status in self.status_for_order
+        assert order.order_status == OrderStatus.NEW
         order.pizza_ids.append(pizza.pizza_id)
-        order.order_status = self.status_for_order[order.order_status]
         self.db.save_order(order)
 
     def remove_pizza(self, order_id: str, pizza_id: str):
         order = self.db.find_order(order_id)
-        assert order.order_status == OrderStatus.ORDERED
+        assert order.order_status == OrderStatus.NEW
         assert pizza_id in order.pizza_ids
         order.pizza_ids.remove(pizza_id)
         self.db.save_order(order)
 
     def update_address(self, order_id: str, address: str):
         order = self.db.find_order(order_id)
-        assert order.order_status in self.status_before_delivery
+        assert order.order_status == OrderStatus.NEW
         order.address = address
         self.db.save_order(order)
 
