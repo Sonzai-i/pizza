@@ -23,8 +23,14 @@ class PizzaService:
         return user
 
     def add_pizza(self, order_id: str, pizza: Pizza):
+        status_for_order = {
+            OrderStatus.NEW: OrderStatus.ORDERED,
+            OrderStatus.ORDERED: OrderStatus.ORDERED,
+        }
         order = self.db.find_order(order_id)
+        assert order.order_status in status_for_order
         order.pizza_ids.append(pizza.pizza_id)
+        order.order_status = status_for_order[order.order_status]
         self.db.save_order(order)
 
     def remove_pizza(self, order_id: str, pizza_id: str):
