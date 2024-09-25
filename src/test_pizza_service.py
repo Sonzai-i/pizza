@@ -29,6 +29,11 @@ def test_pizza_sevice_happy_path():
                           description='Пряные колбаски пепперони с легкой перчинкой, '
                                       'сыр моцарелла со сливочным вкусом и нежный томатный соус',
                           price_rub= 1280)
+
+    calzone = BasePizza(base_pizza_id=str(uuid.uuid4()),
+                        name='Кальцоне',
+                        description='Итальянский пирог, закрытая форма пиццы в виде полумесяца',
+                        price_rub= 1460)
     db.save_base_pizza(pepperoni)
 
     pinapple = Topping(topping_id=str(uuid.uuid4()),
@@ -42,6 +47,11 @@ def test_pizza_sevice_happy_path():
         pepperoni.base_pizza_id,
         [pinapple.topping_id]
     )
+
+    calzone_empty = Pizza(pizza_id=str(uuid.uuid4()),
+                          base_pizza_id=calzone.base_pizza_id,
+                          topping_ids=[])
+
     db.save_pizza(pepperoni_pinapple)
 
     pizza_service = PizzaService(db)
@@ -53,6 +63,10 @@ def test_pizza_sevice_happy_path():
 
     pizza_service.add_pizza(order.order_id, pepperoni_pinapple)
     pizza_service.add_pizza(order.order_id, pepperoni_pinapple)
+
+    pizza_service.remove_pizza(order.order_id, pizza_id=pepperoni_pinapple.pizza_id)
+    # pizza_service.remove_pizza(order.order_id, pizza_id=calzone_empty.pizza_id)
+
     pizza_service.update_address(order.order_id, 'Russia, Moscow, Krasnaya ploschad, 1')
     
     pizza_service.update_order_status(order.order_id, OrderStatus.ORDERED)

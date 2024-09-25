@@ -35,6 +35,8 @@ class PizzaService:
 
     def remove_pizza(self, order_id: str, pizza_id: str):
         order = self.db.find_order(order_id)
+        assert order.order_status == OrderStatus.ORDERED
+        assert pizza_id in order.pizza_ids
         order.pizza_ids.remove(pizza_id)
         self.db.save_order(order)
 
