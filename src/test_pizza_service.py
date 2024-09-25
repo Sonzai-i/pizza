@@ -54,22 +54,17 @@ def test_pizza_sevice_happy_path():
         pepperoni.base_pizza_id,
         [pinapple.topping_id]
     )
-    db.save_pizza(pepperoni_pinapple)
+
     calzone_empty = Pizza(
         pizza_id=str(uuid.uuid4()),
         base_pizza_id=calzone.base_pizza_id,
         topping_ids=[]
     )
 
-    db.save_pizza(calzone_empty)
-
     pizza_service = PizzaService(db)
     user = pizza_service.add_user("Name", 79003002010)
     order = pizza_service.create_order(
-        order_id=str(uuid.uuid4()),
-        user_id=user.user_id,
-        pizza_ids=[],
-        address=''
+        user_id=user.user_id
     )
 
     pizza_service.add_pizza(order.order_id, pepperoni_pinapple)

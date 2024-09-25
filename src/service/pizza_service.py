@@ -1,7 +1,7 @@
 from typing import List
 
 from ..model.entities import Order, User, Pizza, OrderStatus
-from ..model.db import Db
+from ..model.db import Db, InMemDb
 from uuid import uuid4
 
 
@@ -18,8 +18,8 @@ class PizzaService:
     def __init__(self, db: Db):
         self.db = db
 
-    def create_order(self, order_id: str, user_id: str, pizza_ids: List[str], address: str ) -> Order:
-        order = Order(user_id=user_id, order_id=order_id, pizza_ids=pizza_ids, address=address)
+    def create_order(self, user_id: str ) -> Order:
+        order = Order(user_id=user_id)
         self.db.save_order(order)
         return order
 
@@ -29,7 +29,6 @@ class PizzaService:
             phone_number=phone_number,
             user_id=str(uuid4())
         )
-
         self.db.add_user(user)
         return user
 
@@ -37,6 +36,7 @@ class PizzaService:
         order = self.db.find_order(order_id)
         assert order.order_status == OrderStatus.NEW
         order.pizza_ids.append(pizza.pizza_id)
+        self.db.save_pizza(pizza)
         self.db.save_order(order)
 
     def remove_pizza(self, order_id: str, pizza_id: str):

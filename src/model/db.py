@@ -31,6 +31,9 @@ class Db:
     def save_base_pizza(self, base_pizza: BasePizza):
         pass
 
+    def save_pizza(self, pizza: Pizza):
+        pass
+
 
 class InMemDb(Db):
     def __init__(self):

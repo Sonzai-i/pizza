@@ -1,3 +1,4 @@
+import uuid
 from enum import Enum
 from typing import List
 
@@ -20,17 +21,17 @@ class User:
 
 
 class Order:
-    def __init__(self, order_id: str, user_id: str, pizza_ids: List[str], address: str ):
-        self.order_id = order_id
+    def __init__(self, user_id: str ):
+        self.order_id = str(uuid.uuid4())
         self.user_id = user_id
-        self.pizza_ids = pizza_ids
+        self.pizza_ids = []
         self.order_status = OrderStatus.NEW
         self.paid = False
-        self.address = address
+        self.address = ''
 
 
 class BasePizza:
-    def __init__(self, base_pizza_id: str, name: str, description: str, price_rub: float ):
+    def __init__(self, base_pizza_id: str, name: str, description: str, price_rub: float):
         self.base_pizza_id = base_pizza_id
         self.name = name
         self.description = description
