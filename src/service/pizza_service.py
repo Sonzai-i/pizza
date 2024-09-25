@@ -15,6 +15,18 @@ class PizzaService:
         OrderStatus.DELIVERED: OrderStatus.COMPLETED
     }
 
+    status_before_delivery = [
+        OrderStatus.NEW,
+        OrderStatus.ORDERED,
+        OrderStatus.READY,
+        OrderStatus.PREPARING
+    ]
+
+    status_for_order = {
+        OrderStatus.NEW: OrderStatus.ORDERED,
+        OrderStatus.ORDERED: OrderStatus.ORDERED,
+    }
+
     def __init__(self, db: Db):
         self.db = db
 
@@ -24,22 +36,20 @@ class PizzaService:
         return order
 
     def add_user(self, name: str, phone_number: int) -> User:
-        user = User(name=name,
-                    phone_number=phone_number,
-                    user_id=str(uuid4()))
+        user = User(
+            name=name,
+            phone_number=phone_number,
+            user_id=str(uuid4())
+        )
 
         self.db.add_user(user)
         return user
 
     def add_pizza(self, order_id: str, pizza: Pizza):
-        status_for_order = {
-            OrderStatus.NEW: OrderStatus.ORDERED,
-            OrderStatus.ORDERED: OrderStatus.ORDERED,
-        }
         order = self.db.find_order(order_id)
-        assert order.order_status in status_for_order
+        assert order.order_status in self.status_for_order
         order.pizza_ids.append(pizza.pizza_id)
-        order.order_status = status_for_order[order.order_status]
+        order.order_status = self.status_for_order[order.order_status]
         self.db.save_order(order)
 
     def remove_pizza(self, order_id: str, pizza_id: str):
@@ -50,12 +60,8 @@ class PizzaService:
         self.db.save_order(order)
 
     def update_address(self, order_id: str, address: str):
-        status_before_delivery = [OrderStatus.NEW,
-                                  OrderStatus.ORDERED,
-                                  OrderStatus.READY,
-                                  OrderStatus.PREPARING]
         order = self.db.find_order(order_id)
-        assert order.order_status in status_before_delivery
+        assert order.order_status in self.status_before_delivery
         order.address = address
         self.db.save_order(order)
 

@@ -24,23 +24,29 @@ def test_pizza_sevice_happy_path():
 
     db = InMemDb()
     
-    pepperoni = BasePizza(base_pizza_id=str(uuid.uuid4()),
-                          name='Пеперони',
-                          description='Пряные колбаски пепперони с легкой перчинкой, '
-                                      'сыр моцарелла со сливочным вкусом и нежный томатный соус',
-                          price_rub= 1280)
+    pepperoni = BasePizza(
+        base_pizza_id=str(uuid.uuid4()),
+        name='Пеперони',
+        description='Пряные колбаски пепперони с легкой перчинкой, '
+                     'сыр моцарелла со сливочным вкусом и нежный томатный соус',
+        price_rub= 1280
+    )
     db.save_base_pizza(pepperoni)
 
-    calzone = BasePizza(base_pizza_id=str(uuid.uuid4()),
-                        name='Кальцоне',
-                        description='Итальянский пирог, закрытая форма пиццы в виде полумесяца',
-                        price_rub= 1460)
+    calzone = BasePizza(
+        base_pizza_id=str(uuid.uuid4()),
+        name='Кальцоне',
+        description='Итальянский пирог, закрытая форма пиццы в виде полумесяца',
+        price_rub= 1460
+    )
     db.save_base_pizza(calzone)
 
-    pinapple = Topping(topping_id=str(uuid.uuid4()),
-                       name='Ананасы',
-                       description='Сочные нарезанные кусочки ананаса!',
-                       price_rub= 60)
+    pinapple = Topping(
+        topping_id=str(uuid.uuid4()),
+        name='Ананасы',
+        description='Сочные нарезанные кусочки ананаса!',
+        price_rub= 60
+    )
     db.save_topping(pinapple)
 
     pepperoni_pinapple = Pizza(
@@ -49,18 +55,22 @@ def test_pizza_sevice_happy_path():
         [pinapple.topping_id]
     )
     db.save_pizza(pepperoni_pinapple)
-    calzone_empty = Pizza(pizza_id=str(uuid.uuid4()),
-                          base_pizza_id=calzone.base_pizza_id,
-                          topping_ids=[])
+    calzone_empty = Pizza(
+        pizza_id=str(uuid.uuid4()),
+        base_pizza_id=calzone.base_pizza_id,
+        topping_ids=[]
+    )
 
     db.save_pizza(calzone_empty)
 
     pizza_service = PizzaService(db)
     user = pizza_service.add_user("Name", 79003002010)
-    order = pizza_service.create_order(order_id=str(uuid.uuid4()),
-                                       user_id=user.user_id,
-                                       pizza_ids=[],
-                                       address='')
+    order = pizza_service.create_order(
+        order_id=str(uuid.uuid4()),
+        user_id=user.user_id,
+        pizza_ids=[],
+        address=''
+    )
 
     pizza_service.add_pizza(order.order_id, pepperoni_pinapple)
     pizza_service.add_pizza(order.order_id, pepperoni_pinapple)
