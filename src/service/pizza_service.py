@@ -6,6 +6,15 @@ from uuid import uuid4
 
 
 class PizzaService:
+    next_status = {
+        OrderStatus.NEW: OrderStatus.ORDERED,
+        OrderStatus.ORDERED: OrderStatus.PREPARING,
+        OrderStatus.PREPARING: OrderStatus.READY,
+        OrderStatus.READY: OrderStatus.DELIVERING,
+        OrderStatus.DELIVERING: OrderStatus.DELIVERED,
+        OrderStatus.DELIVERED: OrderStatus.COMPLETED
+    }
+
     def __init__(self, db: Db):
         self.db = db
 
@@ -72,20 +81,13 @@ class PizzaService:
         self.db.save_order(order)
 
 
-    def update_order_status(self, order_id: str, status: OrderStatus) -> object:
+    def update_order_status(self, order_id: str, status: OrderStatus):
         order = self.db.find_order(order_id)
-        if status == OrderStatus.ORDERED and order.order_status ==  OrderStatus.NEW:
-            order.order_status = OrderStatus.ORDERED
-        elif status == OrderStatus.PREPARING and order.order_status ==  OrderStatus.ORDERED:
-            order.order_status = OrderStatus.PREPARING
-        elif status == OrderStatus.READY and order.order_status ==  OrderStatus.PREPARING:
-            order.order_status = OrderStatus.READY
-        elif status == OrderStatus.DELIVERING and order.order_status ==  OrderStatus.READY:
-            order.order_status = OrderStatus.DELIVERING
-        elif order.paid:
-            order.order_status = OrderStatus.COMPLETED
+        assert order.order_status in self.next_status
+        assert status == self.next_status[order.order_status]
+        if status == OrderStatus.COMPLETED:
+            assert order.paid
+
+        order.order_status = status
         self.db.save_order(order)
-
-        return order_id
-
 

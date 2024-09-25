@@ -29,12 +29,13 @@ def test_pizza_sevice_happy_path():
                           description='Пряные колбаски пепперони с легкой перчинкой, '
                                       'сыр моцарелла со сливочным вкусом и нежный томатный соус',
                           price_rub= 1280)
+    db.save_base_pizza(pepperoni)
 
     calzone = BasePizza(base_pizza_id=str(uuid.uuid4()),
                         name='Кальцоне',
                         description='Итальянский пирог, закрытая форма пиццы в виде полумесяца',
                         price_rub= 1460)
-    db.save_base_pizza(pepperoni)
+    db.save_base_pizza(calzone)
 
     pinapple = Topping(topping_id=str(uuid.uuid4()),
                        name='Ананасы',
@@ -47,12 +48,12 @@ def test_pizza_sevice_happy_path():
         pepperoni.base_pizza_id,
         [pinapple.topping_id]
     )
-
+    db.save_pizza(pepperoni_pinapple)
     calzone_empty = Pizza(pizza_id=str(uuid.uuid4()),
                           base_pizza_id=calzone.base_pizza_id,
                           topping_ids=[])
 
-    db.save_pizza(pepperoni_pinapple)
+    db.save_pizza(calzone_empty)
 
     pizza_service = PizzaService(db)
     user = pizza_service.add_user("Name", 79003002010)
@@ -68,12 +69,11 @@ def test_pizza_sevice_happy_path():
     # pizza_service.remove_pizza(order.order_id, pizza_id=calzone_empty.pizza_id)
 
     pizza_service.update_address(order.order_id, 'Russia, Moscow, Krasnaya ploschad, 1')
-    
-    pizza_service.update_order_status(order.order_id, OrderStatus.ORDERED)
+
     deliver_order(pizza_service=pizza_service, order_id=order.order_id)
 
     price = pizza_service.calc_price(order.order_id)
-    assert price == 1340 * 2
+    assert price == 1340
 
     pizza_service.on_payment_complete(order.order_id)
     pizza_service.update_order_status(order.order_id, OrderStatus.COMPLETED)

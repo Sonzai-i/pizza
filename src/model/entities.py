@@ -1,8 +1,5 @@
-import random
-import uuid
 from enum import Enum
 from typing import List
-from uuid import uuid4
 
 
 class OrderStatus(Enum):
