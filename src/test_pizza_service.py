@@ -1,8 +1,8 @@
 from .service.pizza_service import PizzaService
 from .model.db import InMemDb
 from .model.entities import *
-from typing import List
 import uuid
+
 
 def deliver_order(pizza_service: PizzaService, order_id: str):
     # TODO: add asserts 
@@ -23,13 +23,13 @@ def test_pizza_sevice_happy_path():
     # TODO: fix
 
     db = InMemDb()
-    
+
     pepperoni = BasePizza(
         base_pizza_id=str(uuid.uuid4()),
         name='Пеперони',
         description='Пряные колбаски пепперони с легкой перчинкой, '
-                     'сыр моцарелла со сливочным вкусом и нежный томатный соус',
-        price_rub= 1280
+                    'сыр моцарелла со сливочным вкусом и нежный томатный соус',
+        price_rub=1280
     )
     db.save_base_pizza(pepperoni)
 
@@ -37,7 +37,7 @@ def test_pizza_sevice_happy_path():
         base_pizza_id=str(uuid.uuid4()),
         name='Кальцоне',
         description='Итальянский пирог, закрытая форма пиццы в виде полумесяца',
-        price_rub= 1460
+        price_rub=1460
     )
     db.save_base_pizza(calzone)
 
@@ -45,7 +45,7 @@ def test_pizza_sevice_happy_path():
         topping_id=str(uuid.uuid4()),
         name='Ананасы',
         description='Сочные нарезанные кусочки ананаса!',
-        price_rub= 60
+        price_rub=60
     )
     db.save_topping(pinapple)
 

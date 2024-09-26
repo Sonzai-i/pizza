@@ -1,7 +1,5 @@
-from typing import List
-
 from ..model.entities import Order, User, Pizza, OrderStatus
-from ..model.db import Db, InMemDb
+from ..model.db import Db
 from uuid import uuid4
 
 
