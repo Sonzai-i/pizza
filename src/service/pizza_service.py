@@ -84,11 +84,11 @@ class PizzaService:
         assert order.order_status in self.next_status
         assert status == self.next_status[order.order_status]
         if status == OrderStatus.ORDERED:
-            assert order.pizza_ids 
+            assert order.pizza_ids
         if status == OrderStatus.COMPLETED:
             assert order.paid
 
-
         order.order_status = status
+        assert order.order_status == status
         self.db.save_order(order)
 
