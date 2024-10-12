@@ -16,7 +16,7 @@ class PizzaService:
     def __init__(self, db: Db):
         self.db = db
 
-    def create_order(self, user_id: str ) -> Order:
+    def create_order(self, user_id: str) -> Order:
         order = Order(user_id=user_id)
         self.db.save_order(order)
         return order
@@ -76,7 +76,6 @@ class PizzaService:
         order.paid = True
         self.db.save_order(order)
 
-
     def update_order_status(self, order_id: str, status: OrderStatus):
         order = self.db.find_order(order_id)
         assert order.order_status in self.next_status
@@ -89,4 +88,3 @@ class PizzaService:
         order.order_status = status
         assert order.order_status == status
         self.db.save_order(order)
-

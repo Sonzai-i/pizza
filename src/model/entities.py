@@ -21,7 +21,7 @@ class User:
 
 
 class Order:
-    def __init__(self, user_id: str ):
+    def __init__(self, user_id: str):
         self.order_id = str(uuid.uuid4())
         self.user_id = user_id
         self.pizza_ids = []

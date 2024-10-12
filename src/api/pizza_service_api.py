@@ -1,12 +1,30 @@
+from typing import List
+
 from fastapi import FastAPI
+from pydantic import BaseModel
+
 from ..service.pizza_service import PizzaService
-from ..model.entities import Order, User, Pizza, OrderStatus
+from ..model.entities import Pizza, OrderStatus
 from ..model.db import InMemDb
 
 app = FastAPI()
 
 db = InMemDb()
 pizza_service = PizzaService(db)
+
+
+class PizzaModel(BaseModel):
+    pizza_id: str
+    base_pizza_id: str
+    topping_ids: List[str]
+
+    def to_pizza(self) -> Pizza:
+        return Pizza(
+            pizza_id= self.pizza_id,
+            base_pizza_id= self.base_pizza_id,
+            topping_ids= self.topping_ids
+        )
+
 
 
 @app.post("/order/")
@@ -40,7 +58,8 @@ async def update_address(order_id: str, address: str):
 
 
 @app.post("/pizza/")
-async def add_pizza(order_id: str, pizza: Pizza):
+async def add_pizza(order_id: str, pizza_model: PizzaModel):
+    pizza = pizza_model.to_pizza()
     return pizza_service.add_pizza(order_id=order_id, pizza=pizza)
 
 
