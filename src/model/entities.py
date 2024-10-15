@@ -1,6 +1,8 @@
 import uuid
 from enum import Enum
 from typing import List
+
+from sqlalchemy import Column, Integer, String, Boolean, Float
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -18,6 +20,9 @@ class OrderStatus(Enum):
 
 class User(Base):
     __tablename__ = 'User'
+    user_id = Column(String, primary_key=True)
+    name = Column(String, nullable=False)
+    phone_number = Column(Integer, unique=True, nullable=False)
 
     def __init__(self, name: str, phone_number: int, user_id: str):
         self.name = name
@@ -27,6 +32,12 @@ class User(Base):
 
 class Order(Base):
     __tablename__ = 'Order'
+    order_id = Column(String, primary_key=True)
+    user_id = Column(String, unique=True, nullable=False)
+    pizza_ids = Column(String)
+    order_status = Column(Integer, nullable=False)
+    paid = Column(Boolean, nullable=False)
+    address = Column(String)
 
     def __init__(self, user_id: str):
         self.order_id = str(uuid.uuid4())
@@ -39,6 +50,10 @@ class Order(Base):
 
 class BasePizza(Base):
     __tablename__ = 'BasePizza'
+    base_pizza_id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    description = Column(String, unique=True, nullable=False)
+    price_rub = Column(Float, nullable=False)
 
     def __init__(self, base_pizza_id: str, name: str, description: str, price_rub: float):
         self.base_pizza_id = base_pizza_id
@@ -49,6 +64,9 @@ class BasePizza(Base):
 
 class Pizza(Base):
     __tablename__ = 'Pizza'
+    pizza_id = Column(Integer, primary_key=True)
+    base_pizza_id = Column(String, unique=True, nullable=False)
+    topping_ids = Column(String, unique=True)
 
     def __init__(self, pizza_id: str, base_pizza_id: str, topping_ids: List[str]):
         self.pizza_id = pizza_id
@@ -58,6 +76,10 @@ class Pizza(Base):
 
 class Topping(Base):
     __tablename__ = 'Topping'
+    topping_id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    description = Column(String, unique=True, nullable=False)
+    price_rub = Column(Float, nullable=False)
 
     def __init__(self, topping_id: str, name: str, description: str, price_rub: float):
         self.topping_id = topping_id
