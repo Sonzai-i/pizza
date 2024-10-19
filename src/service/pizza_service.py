@@ -1,10 +1,8 @@
 from ..model.entities import Order, User, Pizza, OrderStatus
 from ..model.db import Db
 from uuid import uuid4
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 from ..api.basedan import engine
-
-Session = sessionmaker(bind=engine)
 
 
 class PizzaService:
@@ -20,24 +18,30 @@ class PizzaService:
     def __init__(self, db: Db):
         self.db = db
 
+    def session_decorator(self, func):
+        def s(*args, **kwargs):
+            with Session(engine) as session:
+                instance = func(*args, **kwargs)
+                session.add(instance)
+                session.commit()
+
+    @session_decorator
     def create_order(self, user_id: str) -> Order:
         order = Order(user_id=user_id)
         self.db.save_order(order)
         return order
 
+    @session_decorator
     def add_user(self, name: str, phone_number: int) -> User:
-        session = Session()
-
         user = User(
             name=name,
             phone_number=phone_number,
             user_id=str(uuid4())
         )
-        session.add(user)
-        session.commit()
-        session.close()
+        self.db.add_user(user)
         return user
 
+    @session_decorator
     def add_pizza(self, order_id: str, pizza: Pizza):
         order = self.db.find_order(order_id)
         assert order.order_status == OrderStatus.NEW

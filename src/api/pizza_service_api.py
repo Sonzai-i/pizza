@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException
 from pydantic import BaseModel
 
 from ..service.pizza_service import PizzaService
