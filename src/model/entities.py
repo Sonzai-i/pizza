@@ -2,7 +2,7 @@ import uuid
 from enum import Enum
 from typing import List
 
-from sqlalchemy import Column, Integer, String, Boolean, Float
+from sqlalchemy import Column, Integer, String, Boolean, Float, Enum as SQLAlchemyEnum
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -33,10 +33,10 @@ class User(Base):
 class Order(Base):
     __tablename__ = 'Order'
     order_id = Column(String, primary_key=True)
-    user_id = Column(String, unique=True, nullable=False)
+    user_id = Column(String)
     pizza_ids = Column(String)
-    order_status = Column(Integer, nullable=False)
-    paid = Column(Boolean, nullable=False)
+    order_status = Column(SQLAlchemyEnum(OrderStatus))
+    paid = Column(Boolean)
     address = Column(String)
 
     def __init__(self, user_id: str):

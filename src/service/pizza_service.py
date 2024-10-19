@@ -18,12 +18,16 @@ class PizzaService:
     def __init__(self, db: Db):
         self.db = db
 
-    def session_decorator(self, func):
+    @staticmethod
+    def session_decorator(func):
         def s(*args, **kwargs):
             with Session(engine) as session:
                 instance = func(*args, **kwargs)
                 session.add(instance)
                 session.commit()
+            return instance
+
+        return s
 
     @session_decorator
     def create_order(self, user_id: str) -> Order:
@@ -41,7 +45,6 @@ class PizzaService:
         self.db.add_user(user)
         return user
 
-    @session_decorator
     def add_pizza(self, order_id: str, pizza: Pizza):
         order = self.db.find_order(order_id)
         assert order.order_status == OrderStatus.NEW
