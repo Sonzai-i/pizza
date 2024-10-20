@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter
 from pydantic import BaseModel
 
 from ..service.pizza_service import PizzaService
@@ -49,8 +49,7 @@ async def update_order_status(order_id: str, status: OrderStatus):
 
 @router.post("/user/")
 async def add_user(name: str, phone_number: int):
-    user = pizza_service.add_user(name=name, phone_number=phone_number)
-    return {"user_id": user.user_id, "name": user.name, "phone": user.phone_number}
+    return pizza_service.add_user(name=name, phone_number=phone_number)
 
 
 @router.post("/user/{order_id}")

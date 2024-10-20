@@ -1,8 +1,6 @@
 from ..model.entities import Order, User, Pizza, OrderStatus
 from ..model.db import Db
 from uuid import uuid4
-from sqlalchemy.orm import Session
-from ..api.basedan import engine
 
 
 class PizzaService:
@@ -18,24 +16,11 @@ class PizzaService:
     def __init__(self, db: Db):
         self.db = db
 
-    @staticmethod
-    def session_decorator(func):
-        def s(*args, **kwargs):
-            with Session(engine) as session:
-                instance = func(*args, **kwargs)
-                session.add(instance)
-                session.commit()
-            return instance
-
-        return s
-
-    @session_decorator
     def create_order(self, user_id: str) -> Order:
         order = Order(user_id=user_id)
         self.db.save_order(order)
         return order
 
-    @session_decorator
     def add_user(self, name: str, phone_number: int) -> User:
         user = User(
             name=name,
