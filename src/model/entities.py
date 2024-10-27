@@ -1,7 +1,7 @@
 import uuid
 from enum import Enum
 from typing import List
-
+from sqlalchemy import ForeignKey
 from sqlalchemy import Column, Integer, String, Boolean, Float, Enum as SQLAlchemyEnum
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -33,7 +33,7 @@ class User(Base):
 class Order(Base):
     __tablename__ = 'Order'
     order_id = Column(String, primary_key=True)
-    user_id = Column(String)
+    user_id = Column(ForeignKey('User.user_id'))
     pizza_ids = Column(String)
     order_status = Column(SQLAlchemyEnum(OrderStatus))
     paid = Column(Boolean)
@@ -65,8 +65,8 @@ class BasePizza(Base):
 class Pizza(Base):
     __tablename__ = 'Pizza'
     pizza_id = Column(Integer, primary_key=True)
-    base_pizza_id = Column(String, unique=True, nullable=False)
-    topping_ids = Column(String, unique=True)
+    base_pizza_id = Column(ForeignKey('BasePizza.base_pizza_id'), unique=True, nullable=False)
+    topping_ids = Column(ForeignKey('Topping.topping_id'), unique=True)
 
     def __init__(self, pizza_id: str, base_pizza_id: str, topping_ids: List[str]):
         self.pizza_id = pizza_id
