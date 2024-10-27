@@ -1,4 +1,6 @@
 from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+
 from .entities import *
 from copy import deepcopy
 
@@ -78,8 +80,8 @@ class InMemDb(Db):
 
 class SqlDb(Db):
     def __init__(self, engine):
-        _ = create_engine(engine, echo=True)
-        Base.metadata.create_all(_)
+        self.engine = create_engine(engine, echo=True)
+        Base.metadata.create_all(self.engine)
 
     def find_user(self, user_id: str) -> User:
         pass
@@ -97,10 +99,14 @@ class SqlDb(Db):
         pass
 
     def add_user(self, user: User):
-        pass
+        with Session(self.engine) as session:
+            session.add(user)
+            session.commit()
 
     def save_order(self, order: Order):
-        pass
+        with Session(self.engine) as session:
+            session.add(order)
+            session.commit()
 
     def save_topping(self, topping: Topping):
         pass

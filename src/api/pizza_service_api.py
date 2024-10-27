@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 from ..service.pizza_service import PizzaService
 from ..model.entities import Pizza, OrderStatus
-from ..model.db import InMemDb, SqlDb
+from ..model.db import SqlDb
 
 app = FastAPI()
 router = APIRouter()
