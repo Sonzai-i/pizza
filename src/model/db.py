@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine, select, insert
 from sqlalchemy.orm import Session
 
 from .entities import *
@@ -115,7 +115,16 @@ class SqlDb(Db):
 
     def save_order(self, order: Order):
         with Session(self.engine) as session:
-            session.add(order)
+            # Создаем инструкцию вставки
+            stmt = insert(Order).values(order)
+
+            # Указываем, что делать в случае конфликта
+            stmt = stmt.on_conflict_do_update(
+                index_elements=[Order.order_number],
+                set_={'total_amount': order.total_amount}
+            )
+            # Выполняем инструкцию
+            session.execute(stmt)
             session.commit()
 
     def save_topping(self, topping: Topping):

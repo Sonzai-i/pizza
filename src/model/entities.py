@@ -3,7 +3,9 @@ from enum import Enum
 from typing import List
 from sqlalchemy import ForeignKey
 from sqlalchemy import Column, Integer, String, Boolean, Float, Enum as SQLAlchemyEnum
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -34,7 +36,7 @@ class Order(Base):
     __tablename__ = 'Order'
     order_id = Column(String, primary_key=True)
     user_id = Column(ForeignKey('User.user_id'))
-    pizza_ids = Column(String)
+    pizza_ids = Column(ARRAY(String))
     order_status = Column(SQLAlchemyEnum(OrderStatus))
     paid = Column(Boolean)
     address = Column(String)
@@ -50,7 +52,7 @@ class Order(Base):
 
 class BasePizza(Base):
     __tablename__ = 'BasePizza'
-    base_pizza_id = Column(Integer, primary_key=True)
+    base_pizza_id = Column(String, primary_key=True)
     name = Column(String, nullable=False)
     description = Column(String, unique=True, nullable=False)
     price_rub = Column(Float, nullable=False)
@@ -64,9 +66,9 @@ class BasePizza(Base):
 
 class Pizza(Base):
     __tablename__ = 'Pizza'
-    pizza_id = Column(Integer, primary_key=True)
-    base_pizza_id = Column(ForeignKey('BasePizza.base_pizza_id'), unique=True, nullable=False)
-    topping_ids = Column(ForeignKey('Topping.topping_id'), unique=True)
+    pizza_id = Column(String, primary_key=True)
+    base_pizza_id = Column(ForeignKey('BasePizza.base_pizza_id'), nullable=False)
+    topping_ids = Column(ARRAY(String))
 
     def __init__(self, pizza_id: str, base_pizza_id: str, topping_ids: List[str]):
         self.pizza_id = pizza_id
@@ -76,7 +78,7 @@ class Pizza(Base):
 
 class Topping(Base):
     __tablename__ = 'Topping'
-    topping_id = Column(Integer, primary_key=True)
+    topping_id = Column(String, primary_key=True)
     name = Column(String, nullable=False)
     description = Column(String, unique=True, nullable=False)
     price_rub = Column(Float, nullable=False)
