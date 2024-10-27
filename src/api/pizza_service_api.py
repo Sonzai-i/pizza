@@ -5,12 +5,12 @@ from pydantic import BaseModel
 
 from ..service.pizza_service import PizzaService
 from ..model.entities import Pizza, OrderStatus
-from ..model.db import InMemDb
+from ..model.db import InMemDb, SqlDb
 
 app = FastAPI()
 router = APIRouter()
 
-db = InMemDb()
+db = SqlDb('postgresql+psycopg2://postgres:123123@localhost/mydatabase')
 pizza_service = PizzaService(db)
 
 
