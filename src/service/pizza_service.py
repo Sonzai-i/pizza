@@ -60,8 +60,8 @@ class PizzaService:
         return sum_order
 
     def _calc_price_pizza(self, pizza: Pizza) -> float:
-        baze_pizza_id = self.db.find_base_pizza(pizza.base_pizza_id)
-        return baze_pizza_id.price_rub
+        base_pizza_id = self.db.find_base_pizza(pizza.base_pizza_id)
+        return base_pizza_id.price_rub
 
     def _calc_price_topping(self, pizza: Pizza) -> float:
         topping_ids = pizza.topping_ids
