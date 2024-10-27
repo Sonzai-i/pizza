@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
 from .entities import *
@@ -84,19 +84,29 @@ class SqlDb(Db):
         Base.metadata.create_all(self.engine)
 
     def find_user(self, user_id: str) -> User:
-        pass
+        with Session(self.engine) as session:
+            stmt = select(User).where(user_id == User.user_id)
+            return session.execute(stmt).one_or_none()[0]
 
     def find_order(self, order_id: str) -> Order:
-        pass
+        with Session(self.engine) as session:
+            stmt = select(Order).where(order_id == Order.order_id)
+            return session.execute(stmt).one_or_none()[0]
 
     def find_pizza(self, pizza_id: str) -> Pizza:
-        pass
+        with Session(self.engine) as session:
+            stmt = select(Pizza).where(pizza_id == Pizza.pizza_id)
+            return session.execute(stmt).one_or_none()[0]
 
-    def find_topping(self, topping_id: str):
-        pass
+    def find_topping(self, topping_id: str) -> Topping:
+        with Session(self.engine) as session:
+            stmt = select(Topping).where(topping_id == Topping.topping_id)
+            return session.execute(stmt).one_or_none()[0]
 
     def find_base_pizza(self, base_pizza_id: str) -> BasePizza:
-        pass
+        with Session(self.engine) as session:
+            stmt = select(BasePizza).where(base_pizza_id == BasePizza.base_pizza_id)
+            return session.execute(stmt).one_or_none()[0]
 
     def add_user(self, user: User):
         with Session(self.engine) as session:
@@ -109,10 +119,16 @@ class SqlDb(Db):
             session.commit()
 
     def save_topping(self, topping: Topping):
-        pass
+        with Session(self.engine) as session:
+            session.add(topping)
+            session.commit()
 
     def save_base_pizza(self, base_pizza: BasePizza):
-        pass
+        with Session(self.engine) as session:
+            session.add(base_pizza)
+            session.commit()
 
     def save_pizza(self, pizza: Pizza):
-        pass
+        with Session(self.engine) as session:
+            session.add(pizza)
+            session.commit()
