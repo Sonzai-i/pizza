@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Query
 from pydantic import BaseModel
 
 from ..service.pizza_service import PizzaService
@@ -42,7 +42,7 @@ async def on_payment_complete(order_id: str):
 
 
 @router.put("/order/status/")
-async def update_order_status(order_id: str, status: int):
+async def update_order_status(order_id: str, status: int = Query(..., ge=1, le=7)):
     return pizza_service.update_order_status(order_id=order_id, status=OrderStatus(status))
 
 
