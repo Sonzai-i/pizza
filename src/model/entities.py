@@ -5,7 +5,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import Column, Integer, String, Boolean, Float, Enum as SQLAlchemyEnum
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+
 
 Base = declarative_base()
 
