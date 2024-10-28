@@ -37,8 +37,8 @@ class Order(Base):
     order_id = Column(String, primary_key=True)
     user_id = Column(ForeignKey('User.user_id'))
     pizza_ids = Column(ARRAY(String))
-    order_status = Column(SQLAlchemyEnum(OrderStatus))
-    paid = Column(Boolean)
+    order_status = Column(SQLAlchemyEnum(OrderStatus), nullable=False)
+    paid = Column(Boolean, nullable=False)
     address = Column(String)
 
     def __init__(self, user_id: str):

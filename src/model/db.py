@@ -1,6 +1,6 @@
-from sqlalchemy import create_engine, select, insert
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
-
+from sqlalchemy.dialects.postgresql import insert
 from .entities import *
 from copy import deepcopy
 
@@ -115,15 +115,23 @@ class SqlDb(Db):
 
     def save_order(self, order: Order):
         with Session(self.engine) as session:
-            # Создаем инструкцию вставки
-            stmt = insert(Order).values(order)
-
-            # Указываем, что делать в случае конфликта
-            stmt = stmt.on_conflict_do_update(
-                index_elements=[Order.order_number],
-                set_={'total_amount': order.total_amount}
+            stmt = insert(Order).values(
+                order_id=order.order_id,
+                user_id=order.user_id,
+                pizza_ids=order.pizza_ids,
+                order_status=order.order_status,
+                paid=order.paid,
+                address=order.address
             )
-            # Выполняем инструкцию
+            stmt = stmt.on_conflict_do_update(
+                constraint='Order_pkey',
+                set_={
+                    'pizza_ids': order.pizza_ids,
+                    'order_status': order.order_status,
+                    'paid': order.paid,
+                    'address': order.address
+                }
+            )
             session.execute(stmt)
             session.commit()
 
