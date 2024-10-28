@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import FastAPI, APIRouter, Query
+from fastapi import FastAPI, APIRouter
 from pydantic import BaseModel
 
 from ..service.pizza_service import PizzaService
@@ -25,6 +25,7 @@ class PizzaModel(BaseModel):
             topping_ids=self.topping_ids
         )
 
+
 @router.post("/order/")
 async def create_order(user_id: str):
     return pizza_service.create_order(user_id=user_id)
@@ -41,8 +42,8 @@ async def on_payment_complete(order_id: str):
 
 
 @router.put("/order/status/")
-async def update_order_status(order_id: str, status: OrderStatus):
-    return pizza_service.update_order_status(order_id=order_id, status=status)
+async def update_order_status(order_id: str, status: int):
+    return pizza_service.update_order_status(order_id=order_id, status=OrderStatus(status))
 
 
 @router.post("/user/")
