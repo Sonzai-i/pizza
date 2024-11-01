@@ -111,6 +111,7 @@ class SqlDb(Db):
         with Session(self.engine) as session:
             session.add(user)
             session.commit()
+            session.refresh(user)
 
     def save_order(self, order: Order):
         with Session(self.engine) as session:
