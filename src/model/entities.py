@@ -1,8 +1,8 @@
 import uuid
 from enum import Enum
 from typing import List
-from sqlalchemy import ForeignKey
-from sqlalchemy import Column, Integer, String, Boolean, Float, Enum as SQLAlchemyEnum
+from sqlalchemy import ForeignKey, BigInteger
+from sqlalchemy import Column, String, Boolean, Float, Enum as SQLAlchemyEnum
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -24,9 +24,9 @@ class User(Base):
     __tablename__ = 'User'
     user_id = Column(String, primary_key=True)
     name = Column(String, nullable=False)
-    phone_number = Column(Integer, unique=True, nullable=False)
+    phone_number = Column(BigInteger, unique=True, nullable=False)
 
-    def __init__(self, name: str, phone_number: int, user_id: str):
+    def __init__(self, name: str, phone_number: BigInteger, user_id: str):
         self.name = name
         self.phone_number = phone_number
         self.user_id = user_id

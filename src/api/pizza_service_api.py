@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import FastAPI, APIRouter, Query
 from pydantic import BaseModel
+from sqlalchemy import BigInteger
 
 from ..service.pizza_service import PizzaService
 from ..model.entities import Pizza, OrderStatus
@@ -47,7 +48,7 @@ async def update_order_status(order_id: str, status: int = Query(..., ge=1, le=7
 
 
 @router.post("/user/")
-async def add_user(name: str, phone_number: int):
+async def add_user(name: str, phone_number: BigInteger):
     return pizza_service.add_user(name=name, phone_number=phone_number)
 
 
