@@ -1,5 +1,3 @@
-from sqlalchemy import BigInteger
-
 from ..model.entities import Order, User, Pizza, OrderStatus
 from ..model.db import Db
 from uuid import uuid4
@@ -23,7 +21,7 @@ class PizzaService:
         self.db.save_order(order)
         return order
 
-    def add_user(self, name: str, phone_number: BigInteger) -> User:
+    def add_user(self, name: str, phone_number: int) -> User:
         user = User(
             name=name,
             phone_number=phone_number,

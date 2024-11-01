@@ -6,7 +6,6 @@ from sqlalchemy import Column, String, Boolean, Float, Enum as SQLAlchemyEnum
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.declarative import declarative_base
 
-
 Base = declarative_base()
 
 
@@ -26,7 +25,7 @@ class User(Base):
     name = Column(String, nullable=False)
     phone_number = Column(BigInteger, unique=True, nullable=False)
 
-    def __init__(self, name: str, phone_number: BigInteger, user_id: str):
+    def __init__(self, name: str, phone_number: int, user_id: str):
         self.name = name
         self.phone_number = phone_number
         self.user_id = user_id
