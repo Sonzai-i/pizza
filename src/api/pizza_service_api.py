@@ -1,14 +1,18 @@
 from typing import List
 from fastapi import FastAPI, APIRouter, Query
 from pydantic import BaseModel
+from sqlalchemy import create_engine
+
 from ..service.pizza_service import PizzaService
-from ..model.entities import Pizza, OrderStatus
+from ..model.entities import Pizza, OrderStatus, Base
 from ..model.db import SqlDb
 
 app = FastAPI()
 router = APIRouter()
+engine = create_engine('postgresql+psycopg2://postgres:123123@localhost/mydatabase', echo=True)
+Base.metadata.create_all(engine)
 
-db = SqlDb('postgresql+psycopg2://postgres:123123@localhost/mydatabase')
+db = SqlDb(engine)
 pizza_service = PizzaService(db)
 
 

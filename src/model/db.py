@@ -80,8 +80,7 @@ class InMemDb(Db):
 
 class SqlDb(Db):
     def __init__(self, engine):
-        self.engine = create_engine(engine, echo=True)
-        Base.metadata.create_all(self.engine)
+        self.engine = engine
 
     def find_user(self, user_id: str) -> User:
         with Session(self.engine) as session:
