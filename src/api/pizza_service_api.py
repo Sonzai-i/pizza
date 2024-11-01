@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from sqlalchemy import create_engine
 
 from ..service.pizza_service import PizzaService
-from ..model.entities import Pizza, OrderStatus, Base
+from ..model.entities import Pizza, OrderStatus, Base, User
 from ..model.db import SqlDb
 
 app = FastAPI()
@@ -26,6 +26,16 @@ class PizzaModel(BaseModel):
             pizza_id=self.pizza_id,
             base_pizza_id=self.base_pizza_id,
             topping_ids=self.topping_ids
+        )
+
+class UserModel(BaseModel):
+    name : str
+    phone_number : int
+
+    def to_user(self) -> User:
+        return pizza_service.add_user(
+            name=self.name,
+            phone_number=self.phone_number
         )
 
 
@@ -50,8 +60,9 @@ async def update_order_status(order_id: str, status: int = Query(..., ge=1, le=7
 
 
 @router.post("/user/")
-async def add_user(name: str, phone_number: int):
-    return pizza_service.add_user(name=name, phone_number=phone_number)
+async def add_user(usermodel: UserModel):
+    _ = usermodel.to_user()
+    return usermodel
 
 
 @router.post("/user/{order_id}")
