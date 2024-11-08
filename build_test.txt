@@ -1,0 +1,22 @@
+if ! command -v pytest &> /dev/null; then
+    echo "pytest не установлен. Установите его с помощью 'pip install pytest'."
+    exit 1
+fi
+
+echo "Запуск тестов..."
+pytest
+
+if [ $? -ne 0 ]; then
+    echo "Тесты не пройдены. Завершение скрипта."
+    exit 1
+fi
+
+echo "Запуск проекта..."
+uvicorn src.api.pizza_service_api:app
+
+if [ $? -ne 0 ]; then
+    echo "Проект завершился с ошибкой."
+    exit 1
+fi
+
+echo "Проект успешно собран и запущен."
