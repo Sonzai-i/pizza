@@ -4,12 +4,22 @@ from pydantic import BaseModel
 from sqlalchemy import create_engine
 
 from ..service.pizza_service import PizzaService
-from ..model.entities import Pizza, OrderStatus, Base, User
+from ..model.entities import Pizza, OrderStatus, Base
 from ..model.db import SqlDb
+
+import os
+from dotenv import load_dotenv
 
 app = FastAPI()
 router = APIRouter()
-engine = create_engine('postgresql+psycopg2://postgres:123123@localhost/mydatabase', echo=True)
+load_dotenv()
+username = os.getenv('DB_USERNAME')
+password = os.getenv('DB_PASSWORD')
+host = os.getenv('DB_HOST')
+db_name = os.getenv('DB_NAME')
+port = os.getenv('SERVER_PORT')
+
+engine = create_engine(f'postgresql+psycopg2://{username}:{password}@{host}:{port}/{db_name}', echo=True)
 Base.metadata.create_all(engine)
 
 db = SqlDb(engine)
