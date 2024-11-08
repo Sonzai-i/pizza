@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 
 app = FastAPI()
 router = APIRouter()
+
 load_dotenv()
 username = os.getenv('DB_USERNAME')
 password = os.getenv('DB_PASSWORD')

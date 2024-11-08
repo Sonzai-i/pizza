@@ -4,7 +4,7 @@ from typing import List
 from sqlalchemy import ForeignKey, BigInteger
 from sqlalchemy import Column, String, Boolean, Float, Enum as SQLAlchemyEnum
 from sqlalchemy.dialects.postgresql import ARRAY
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
