@@ -1,3 +1,6 @@
+#!/bin/bash
+
+# Проверка установки pytest
 if ! command -v pytest &> /dev/null; then
     echo "pytest не установлен. Установите его с помощью 'pip install pytest'."
     exit 1
