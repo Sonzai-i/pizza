@@ -15,7 +15,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Запуск проекта..."
-uvicorn src.api.pizza_service_api:app
+uvicorn src.api.pizza_service_api:app --host 0.0.0.0 --port 8000
 
 if [ $? -ne 0 ]; then
     echo "Проект завершился с ошибкой."
