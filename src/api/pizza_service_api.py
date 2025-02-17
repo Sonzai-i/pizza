@@ -82,3 +82,6 @@ async def remove_pizza(order_id: str, pizza_id: str):
 
 
 app.include_router(router)
+
+def main():
+    pass
